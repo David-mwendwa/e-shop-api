@@ -23,7 +23,7 @@ const createProduct = (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
-    res.status(StatusCodes.CREATED).json(products);
+    res.status(StatusCodes.OK).json(products);
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: error,
@@ -39,6 +39,7 @@ const getProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   res.send('updateProduct');
 };
+
 const deleteProduct = async (req, res) => {
   res.send('deleteProduct');
 };

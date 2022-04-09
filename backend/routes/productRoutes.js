@@ -7,7 +7,7 @@ import {
   getProduct,
   updateProduct,
   deleteProduct,
-} from '../controllers/productControllers.js';
+} from '../controllers/productsController.js';
 
 router.route('/').post(createProduct).get(getProducts);
 router.route('/:id').get(getProduct).patch(updateProduct).delete(deleteProduct);
