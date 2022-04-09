@@ -29,6 +29,22 @@ const getCategories = async (req, res) => {
   }
 };
 
+const getCategory = async (req, res) => {
+  try {
+    let { id: categoryId } = req.params;
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        sucess: false,
+        message: `No category with the id ${categoryId}`,
+      });
+    }
+    res.status(StatusCodes.OK).json({ success: true, category });
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error });
+  }
+};
+
 const deleteCategory = async (req, res) => {
   try {
     let { id: categoryId } = req.params;
@@ -38,14 +54,13 @@ const deleteCategory = async (req, res) => {
         sucess: false,
         message: `No category with the id ${categoryId}`,
       });
-    } else {
-      res
-        .status(StatusCodes.OK)
-        .json({ sucess: true, message: 'Category deleted successfully' });
     }
+    res
+      .status(StatusCodes.OK)
+      .json({ sucess: true, message: 'Category deleted successfully' });
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).json({ success: false, eror: error });
   }
 };
 
-export { createCategory, getCategories, deleteCategory };
+export { createCategory, getCategories, getCategory, deleteCategory };
