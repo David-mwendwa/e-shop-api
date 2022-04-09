@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "backend for e-shop app",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon app.js"
   },
@@ -12,6 +13,8 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongoose": "^6.2.10"
+    "http-status-codes": "^2.2.0",
+    "mongoose": "^6.2.10",
+    "morgan": "^1.10.0"
   }
 }
