@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import cors from 'cors';
 import express from 'express';
 const app = express();
 dotenv.config();
@@ -10,6 +11,10 @@ import categoryRouter from './routes/categoryRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 
 import connectDB from './db/connectDB.js';
+
+// cors
+app.use(cors());
+app.options('*', cors());
 
 // middleware
 app.use(express.json());
