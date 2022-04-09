@@ -1,9 +1,23 @@
 import { StatusCodes } from 'http-status-codes';
 import Product from '../models/Product.js';
 
-const createProduct = async (req, res) => {
-  const newProduct = await Product.create(req.body);
-  res.status(StatusCodes.CREATED).json(newProduct);
+const createProduct = (req, res) => {
+  const product = new Product({
+    name: req.body.name,
+    image: req.body.image,
+    countInStock: req.body.countInStock,
+  });
+  product
+    .save()
+    .then((createdProduct) => {
+      res.status(StatusCodes.CREATED).json(createdProduct);
+    })
+    .catch((error) => {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: error.message,
+        success: false,
+      });
+    });
 };
 
 const getProducts = async (req, res) => {

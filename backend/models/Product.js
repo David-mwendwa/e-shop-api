@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -9,7 +9,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  countInStock: Number,
+  countInStock: {
+    type: Number,
+    required: true,
+  },
 });
 
 export default mongoose.model('Product', productSchema);
