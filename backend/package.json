@@ -1,0 +1,17 @@
+{
+  "name": "e-shop-api",
+  "version": "1.0.0",
+  "description": "backend for e-shop app",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10"
+  }
+}
