@@ -45,6 +45,30 @@ const getCategory = async (req, res) => {
   }
 };
 
+const updateCategory = async (req, res) => {
+  try {
+    let { id: categoryId } = req.params;
+    const category = await Category.findByIdAndUpdate(
+      categoryId,
+      {
+        name: req.body.name,
+        icon: req.body.icon,
+        color: req.body.color,
+      },
+      { new: true, runValidators: true }
+    );
+    if (!category) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        sucess: false,
+        message: `No category with the id ${categoryId}`,
+      });
+    }
+    res.status(StatusCodes.OK).json({ success: true, category });
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error });
+  }
+};
+
 const deleteCategory = async (req, res) => {
   try {
     let { id: categoryId } = req.params;
@@ -63,4 +87,10 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-export { createCategory, getCategories, getCategory, deleteCategory };
+export {
+  createCategory,
+  getCategories,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+};
