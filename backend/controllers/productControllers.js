@@ -21,7 +21,15 @@ const createProduct = (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-  res.send('getAllProducts');
+  try {
+    const products = await Product.find({});
+    res.status(StatusCodes.CREATED).json(products);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: error,
+      success: false,
+    });
+  }
 };
 
 const getProduct = async (req, res) => {
