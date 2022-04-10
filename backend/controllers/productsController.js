@@ -18,7 +18,12 @@ const getProducts = async (req, res) => {
 };
 
 const getProduct = async (req, res) => {
-  res.send('getProduct');
+  const { id: productId } = req.params;
+  const product = await Product.findOne({ _id: productId });
+  if (!product) {
+    throw new NotFoundError(`No product with id ${productId}`);
+  }
+  res.status(StatusCodes.OK).json({ success: true, product });
 };
 
 const updateProduct = async (req, res) => {
