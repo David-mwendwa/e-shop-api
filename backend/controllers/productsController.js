@@ -63,4 +63,20 @@ const deleteProduct = async (req, res) => {
   res.status(StatusCodes.OK).json({ success: true, msg: 'product deleted' });
 };
 
-export { createProduct, getProducts, getProduct, updateProduct, deleteProduct };
+const getFeaturedProducts = async (req, res) => {
+  const count = req.params.count ? req.params.count : 0;
+  const products = await Product.find({ isFeatured: true }).limit(+count);
+  if (!products) {
+    throw new BadRequestError('something went wrong');
+  }
+  res.status(StatusCodes.OK).json({ products });
+};
+
+export {
+  createProduct,
+  getProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+  getFeaturedProducts,
+};
