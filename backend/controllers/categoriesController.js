@@ -2,15 +2,12 @@ import { StatusCodes } from 'http-status-codes';
 import Category from '../models/Category.js';
 
 const createCategory = async (req, res) => {
-  let category = new Category({
-    name: req.body.name,
-    icon: req.body.icon,
-    color: req.body.color,
-  });
-  category = await category.save();
-  if (!category) {
-    throw new Error('category cannot be created');
+  const { name, icon, color } = req.body;
+  if (!name || !icon || !color) {
+    throw new Error('Please provide all values');
   }
+  let category = new Category({ name, icon, color });
+  category = await category.save();
   res.status(StatusCodes.CREATED).json({ category });
 };
 
@@ -30,18 +27,18 @@ const getCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   let { id: categoryId } = req.params;
-  const category = await Category.findByIdAndUpdate(
-    categoryId,
-    {
-      name: req.body.name,
-      icon: req.body.icon,
-      color: req.body.color,
-    },
-    { new: true, runValidators: true }
-  );
+  const { name, icon, color } = req.body;
+  if (!name || !icon || !color) {
+    throw new Error('Please provide all values');
+  }
+  let category = await Category.findOne({ _id: categoryId });
   if (!category) {
     throw new Error(`No category with the id ${categoryId}`);
   }
+  category = await Category.findByIdAndUpdate(categoryId, req.body, {
+    new: true,
+    runValidators: true,
+  });
   res.status(StatusCodes.OK).json({ success: true, category });
 };
 
