@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
 
@@ -19,6 +20,10 @@ const getProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   const { id: productId } = req.params;
+  const isProductIdValid = mongoose.isValidObjectId(productId);
+  if (!isProductIdValid) {
+    throw new BadRequestError(`product Id is invalid`);
+  }
   const product = await Product.findOne({ _id: productId }).populate(
     'category'
   );
@@ -30,6 +35,10 @@ const getProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id: productId } = req.params;
+  const isProductIdValid = mongoose.isValidObjectId(productId);
+  if (!isProductIdValid) {
+    throw new BadRequestError(`product Id is invalid`);
+  }
   let product = await Product.findOne({ _id: productId });
   if (!product) {
     throw new NotFoundError(`No product with id ${productId}`);
@@ -43,6 +52,10 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id: productId } = req.params;
+  const isProductIdValid = mongoose.isValidObjectId(productId);
+  if (!isProductIdValid) {
+    throw new BadRequestError(`product Id is invalid`);
+  }
   let product = await Product.findByIdAndRemove(productId);
   if (!product) {
     throw new NotFoundError(`No product with id ${productId}`);
