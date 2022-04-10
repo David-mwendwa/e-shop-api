@@ -14,7 +14,12 @@ const createProduct = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-  const products = await Product.find({});
+  let filter = {};
+  const { categories } = req.query;
+  if (categories) {
+    filter = { category: categories.split(',') };
+  }
+  const products = await Product.find(filter).populate('category');
   res.status(StatusCodes.OK).json({ products });
 };
 
