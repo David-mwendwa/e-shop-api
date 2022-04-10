@@ -42,7 +42,12 @@ const updateProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  res.send('deleteProduct');
+  const { id: productId } = req.params;
+  let product = await Product.findByIdAndRemove(productId);
+  if (!product) {
+    throw new NotFoundError(`No product with id ${productId}`);
+  }
+  res.status(StatusCodes.OK).json({ success: true, msg: 'product deleted' });
 };
 
 export { createProduct, getProducts, getProduct, updateProduct, deleteProduct };
