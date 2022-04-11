@@ -15,6 +15,7 @@ import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 
 import connectDB from './db/connectDB.js';
+import authJWT from './utils/jwt.js';
 
 // cors
 app.use(cors());
@@ -23,6 +24,7 @@ app.options('*', cors());
 // middleware
 app.use(express.json());
 app.use(morgan('dev'));
+// app.use(authJWT);
 
 // routes
 app.use('/api/v1/products', productRouter);
