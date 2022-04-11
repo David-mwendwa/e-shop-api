@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
 

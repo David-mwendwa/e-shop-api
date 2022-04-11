@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -57,6 +58,15 @@ userSchema.virtual('id').get(function () {
 
 userSchema.set('toJSON', {
   virtuals: true,
+});
+
+userSchema.pre('save', async function () {
+  //console.log(this.modifiedPaths(), this.isModified('password'));
+  //if (this.isModified('password')) return;
+  if (this.isNew) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 });
 
 export default mongoose.model('User', userSchema);
