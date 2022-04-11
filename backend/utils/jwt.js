@@ -5,6 +5,7 @@ const authJWT = () => {
   return expressJWT({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256'],
+    isRevoked: isRevoked,
   }).unless({
     path: [
       { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
@@ -13,6 +14,13 @@ const authJWT = () => {
       '/api/v1/auth/login',
     ],
   });
+};
+
+const isRevoked = (req, payload, done) => {
+  if (!payload.isAdmin) {
+    done(null, true);
+  }
+  done();
 };
 
 export default authJWT;
