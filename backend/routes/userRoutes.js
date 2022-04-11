@@ -8,12 +8,14 @@ import {
   updateUser,
   getUsers,
   getUser,
+  getUserCount,
 } from '../controllers/usersController.js';
 
 router.route('/auth/register').post(registerUser);
 router.route('/auth/login').post(loginUser);
 router.route('/auth/updateUser').patch(updateUser);
 router.route('/users').get(getUsers);
+//router.route('/users/count').get(getUserCount);
 router.route('/users/:id').get(getUser);
 
 export default router;

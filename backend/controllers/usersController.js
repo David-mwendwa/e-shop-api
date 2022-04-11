@@ -58,8 +58,17 @@ const getUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user });
 };
 
+// TODO: add a route to get user count
+const getUserCount = async (req, res) => {
+  const userCount = await User.countDocuments((count) => count);
+  if (!userCount) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false });
+  }
+  res.json(StatusCodes.OK).json({ userCount: userCount });
+};
+
 const updateUser = async (req, res) => {
   res.send('updateUser');
 };
 
-export { registerUser, loginUser, updateUser, getUsers, getUser };
+export { registerUser, loginUser, updateUser, getUsers, getUser, getUserCount };
