@@ -13,13 +13,17 @@ const userSchema = new mongoose.Schema({
       'Please provide a valid email address',
     ],
   },
-  passwordHash: {
+  password: {
     type: String,
     required: [true, 'please provide a password'],
   },
   phone: {
     type: String,
     required: [true, 'please provide a phone number'],
+    match: [
+      /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+      'Please provide a valid phone number',
+    ],
   },
   isAdmin: {
     type: Boolean,
