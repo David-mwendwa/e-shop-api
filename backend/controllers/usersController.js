@@ -71,4 +71,25 @@ const updateUser = async (req, res) => {
   res.send('updateUser');
 };
 
-export { registerUser, loginUser, updateUser, getUsers, getUser, getUserCount };
+const deleteUser = async (req, res) => {
+  const { id: userId } = req.params;
+  const isUserIdValid = mongoose.isValidObjectId(userId);
+  if (!isUserIdValid) {
+    throw new BadRequestError(`product Id is invalid`);
+  }
+  let product = await Product.findByIdAndRemove(userId);
+  if (!product) {
+    throw new NotFoundError(`No user with id ${userId}`);
+  }
+  res.status(StatusCodes.OK).json({ success: true, msg: 'user deleted' });
+};
+
+export {
+  registerUser,
+  loginUser,
+  updateUser,
+  getUsers,
+  getUser,
+  getUserCount,
+  deleteUser,
+};
