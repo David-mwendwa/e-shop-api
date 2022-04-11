@@ -1,7 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import { BadRequestError, NotFoundError } from '../errors/index.js';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} from '../errors/index.js';
 import mongoose from 'mongoose';
 
 const registerUser = async (req, res) => {
@@ -19,11 +24,24 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  res.send('loginUser');
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new BadRequestError('Please provide email and password');
+  }
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new UnauthenticatedError('Incorrect password or email');
+  }
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError('Incorrect password or email');
+  }
+  const token = user.createJWT();
+  res.status(StatusCodes.OK).json({ user: user.email, token });
 };
 
 const getUsers = async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).select('-password');
   res.status(StatusCodes.OK).json({ users });
 };
 
@@ -33,7 +51,7 @@ const getUser = async (req, res) => {
   if (!isUserIdValid) {
     throw new BadRequestError(`user Id is invalid`);
   }
-  const user = await User.findOne({ _id: userId });
+  const user = await User.findOne({ _id: userId }).select('-password');
   if (!user) {
     throw new NotFoundError(`No user found with id: ${userId}`);
   }
