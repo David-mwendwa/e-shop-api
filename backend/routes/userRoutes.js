@@ -5,10 +5,14 @@ import {
   registerUser,
   loginUser,
   updateUser,
+  getUsers,
+  getUser,
 } from '../controllers/usersController.js';
 
-router.route('/register').post(registerUser);
-router.route('/login').post(loginUser);
-router.route('/updateUser').patch(updateUser);
+router.route('/auth/register').post(registerUser);
+router.route('/auth/login').post(loginUser);
+router.route('/auth/updateUser').patch(updateUser);
+router.route('/users').get(getUsers);
+router.route('/users/:id').get(getUser);
 
 export default router;

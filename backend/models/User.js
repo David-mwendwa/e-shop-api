@@ -60,9 +60,9 @@ userSchema.set('toJSON', {
   virtuals: true,
 });
 
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
   //console.log(this.modifiedPaths(), this.isModified('password'));
-  //if (this.isModified('password')) return;
+  if (!this.isModified('password')) return next();
   if (this.isNew) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
