@@ -24,7 +24,7 @@ app.options('*', cors());
 // middleware
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(authJWT()); // protects all the routes
+//app.use(authJWT()); // protects all the routes
 
 // routes
 app.use('/api/v1/products', productRouter);
