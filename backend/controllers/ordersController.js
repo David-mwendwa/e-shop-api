@@ -16,7 +16,19 @@ const createOrder = async (req, res) => {
   );
   orderItemIds = await orderItemIds;
 
-  let order = new Order({ ...req.body, orderItems: orderItemIds });
+  let totalPrices = Promise.all(
+    (await orderItemIds).map(async (orderItemId) => {
+      const orderItem = await OrderItem.findById(orderItemId).populate(
+        'product',
+        'price'
+      );
+      return orderItem.product.price * orderItem.quantity;
+    })
+  );
+  totalPrices = await totalPrices;
+  const totalPrice = totalPrices.reduce((acc, curr) => acc + curr, 0);
+
+  let order = new Order({ ...req.body, orderItems: orderItemIds, totalPrice });
   order = await order.save();
   if (!order) {
     throw new BadRequestError('something went wrong');
