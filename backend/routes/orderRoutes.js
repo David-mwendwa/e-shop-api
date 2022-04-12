@@ -7,9 +7,11 @@ import {
   getSingleOrder,
   updateOrder,
   deleteOrder,
+  getTotalSales,
 } from '../controllers/ordersController.js';
 
 router.route('/').post(createOrder).get(getOrders);
+router.route('/totalSales').get(getTotalSales);
 router.route('/:id').get(getSingleOrder).patch(updateOrder).delete(deleteOrder);
 
 export default router;

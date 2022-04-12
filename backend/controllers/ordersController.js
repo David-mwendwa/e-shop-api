@@ -87,4 +87,21 @@ const deleteOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ sucess: true, message: 'Order Deleted!' });
 };
 
-export { createOrder, getOrders, getSingleOrder, updateOrder, deleteOrder };
+const getTotalSales = async (req, res) => {
+  const totalSales = await Order.aggregate([
+    { $group: { _id: null, totalSales: { $sum: '$totalPrice' } } },
+  ]);
+  if (!totalSales) {
+    throw new NotFoundError('The order sales cannot be generated');
+  }
+  res.status(StatusCodes.OK).json({ totalSales: totalSales.pop().totalSales });
+};
+
+export {
+  createOrder,
+  getOrders,
+  getSingleOrder,
+  updateOrder,
+  deleteOrder,
+  getTotalSales,
+};
