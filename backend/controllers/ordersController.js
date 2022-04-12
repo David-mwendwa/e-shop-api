@@ -44,4 +44,34 @@ const getSingleOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ order });
 };
 
-export { createOrder, getOrders, getSingleOrder };
+const updateOrder = async (req, res) => {
+  let { id: orderId } = req.params;
+  const { status } = req.body;
+  let order = await Order.findOne({ _id: orderId });
+  console.log(order);
+  if (!order) {
+    throw new NotFoundError(`No order with the id ${orderId}`);
+  }
+  order = await Order.findByIdAndUpdate(
+    orderId,
+    { status },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(StatusCodes.OK).json({ success: true, order });
+};
+
+const deleteOrder = async (req, res) => {
+  let { id: orderId } = req.params;
+  const order = await Order.findOneAndRemove({ _id: orderId });
+  if (!order) {
+    throw new NotFoundError(`No category with the id ${orderId}`);
+  }
+  res
+    .status(StatusCodes.OK)
+    .json({ sucess: true, message: 'Category deleted successfully' });
+}
+
+export { createOrder, getOrders, getSingleOrder, updateOrder, deleteOrder };
