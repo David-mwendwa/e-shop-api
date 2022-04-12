@@ -25,7 +25,23 @@ const createOrder = async (req, res) => {
 };
 
 const getOrders = async (req, res) => {
-  res.send('getOrders');
+  const orders = await Order.find({})
+    .populate('user', ['name', 'email'])
+    .sort({ dateOrdered: -1 });
+
+  res.status(StatusCodes.OK).json({ orders });
 };
 
-export { getOrders, createOrder };
+const getSingleOrder = async (req, res) => {
+  const { id: orderId } = req.params;
+  const order = await Order.findById(orderId)
+    .populate('user', ['name', 'email'])
+    .populate({
+      path: 'orderItems',
+      populate: { path: 'product', populate: 'category' },
+    });
+
+  res.status(StatusCodes.OK).json({ order });
+};
+
+export { createOrder, getOrders, getSingleOrder };
