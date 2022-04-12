@@ -17,6 +17,10 @@ router
   .route('/')
   .post(uploadOptions.single('image'), createProduct)
   .get(getProducts);
-router.route('/:id').get(getProduct).patch(updateProduct).delete(deleteProduct);
+router
+  .route('/:id')
+  .get(getProduct)
+  .patch(uploadOptions.single('image'), updateProduct)
+  .delete(deleteProduct);
 
 export default router;

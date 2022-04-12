@@ -55,10 +55,24 @@ const updateProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id ${productId}`);
   }
-  product = await Product.findByIdAndUpdate(productId, req.body, {
-    new: true,
-    runValidators: true,
-  });
+
+  let imagePath;
+  if (req.file) {
+    const fileName = req.file.filename;
+    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
+    imagePath = `${basePath}${fileName}`;
+  } else {
+    imagePath = product.image;
+  }
+
+  product = await Product.findByIdAndUpdate(
+    productId,
+    { ...req.body, image: imagePath },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   res.status(StatusCodes.OK).json({ product });
 };
 
