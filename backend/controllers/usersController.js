@@ -61,7 +61,7 @@ const getUser = async (req, res) => {
 // TODO: add a route to get user count -> DONE!!
 const getUserCount = async (req, res) => {
   const userCount = await User.countDocuments({});
-  res.json(StatusCodes.OK).json({ userCount: userCount });
+  res.status(StatusCodes.OK).json({ userCount });
 };
 
 const updateUser = async (req, res) => {
