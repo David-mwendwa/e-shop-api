@@ -8,7 +8,9 @@ const createProduct = async (req, res) => {
   if (!name || !description || !countInStock) {
     throw new BadRequestError('Please provide name, description, count');
   }
-
+  if (!req.file) {
+    throw new BadRequestError('Please provide an image');
+  }
   const fileName = req.file.filename;
   const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
   const imagePath = `${basePath}${fileName}`;
