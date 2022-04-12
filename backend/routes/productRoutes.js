@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import auth from '../middleware/auth.js';
+import { uploadOptions } from '../utils/multer.js';
 
 import {
   createProduct,
@@ -12,7 +13,10 @@ import {
 } from '../controllers/productsController.js';
 
 router.route('/featured/:count').get(getFeaturedProducts);
-router.route('/').post(createProduct).get(auth, getProducts);
+router
+  .route('/')
+  .post(uploadOptions.single('image'), createProduct)
+  .get(getProducts);
 router.route('/:id').get(getProduct).patch(updateProduct).delete(deleteProduct);
 
 export default router;

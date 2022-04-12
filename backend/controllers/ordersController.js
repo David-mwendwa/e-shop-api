@@ -102,6 +102,8 @@ const getOrderCount = async (req, res) => {
   res.status(StatusCodes.OK).json({ orderCount });
 };
 
+// TODO: Create a route for the admin to get _all user orders_ & _orders by Id_ 
+
 export {
   createOrder,
   getOrders,

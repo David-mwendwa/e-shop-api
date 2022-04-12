@@ -8,7 +8,12 @@ const createProduct = async (req, res) => {
   if (!name || !description || !countInStock) {
     throw new BadRequestError('Please provide name, description, count');
   }
-  let product = new Product(req.body);
+
+  const fileName = req.file.filename;
+  const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
+  const imagePath = `${basePath}${fileName}`;
+
+  let product = new Product({ ...req.body, image: imagePath });
   product = await product.save();
   res.status(StatusCodes.CREATED).json({ product });
 };
