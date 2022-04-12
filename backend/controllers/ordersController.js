@@ -69,9 +69,10 @@ const deleteOrder = async (req, res) => {
   if (!order) {
     throw new NotFoundError(`No category with the id ${orderId}`);
   }
-  res
-    .status(StatusCodes.OK)
-    .json({ sucess: true, message: 'Category deleted successfully' });
-}
+  await order.orderItems.map(async (orderItem) => {
+    await OrderItem.findOneAndRemove(orderItem);
+  });
+  res.status(StatusCodes.OK).json({ sucess: true, message: 'Order Deleted!' });
+};
 
 export { createOrder, getOrders, getSingleOrder, updateOrder, deleteOrder };
