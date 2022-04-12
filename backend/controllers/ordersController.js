@@ -97,6 +97,11 @@ const getTotalSales = async (req, res) => {
   res.status(StatusCodes.OK).json({ totalSales: totalSales.pop().totalSales });
 };
 
+const getOrderCount = async (req, res) => {
+  const orderCount = await Order.countDocuments({});
+  res.status(StatusCodes.OK).json({ orderCount });
+};
+
 export {
   createOrder,
   getOrders,
@@ -104,4 +109,5 @@ export {
   updateOrder,
   deleteOrder,
   getTotalSales,
+  getOrderCount,
 };
