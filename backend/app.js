@@ -51,3 +51,5 @@ const port = process.env.PORT || 5000;
     console.log(error);
   }
 })();
+
+//the content comes as a json text which makes it tricky to be parsed as html
