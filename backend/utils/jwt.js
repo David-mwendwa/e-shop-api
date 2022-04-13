@@ -8,6 +8,7 @@ const authJWT = () => {
     isRevoked: isRevoked,
   }).unless({
     path: [
+      { url: /\/products\/uploads(.*)/, methods: ['GET', 'OPTIONS'] },
       { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
       { url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS'] },
       '/api/v1/auth/register',

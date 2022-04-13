@@ -1,3 +1,5 @@
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -25,6 +27,10 @@ app.options('*', cors());
 app.use(express.json());
 app.use(morgan('dev'));
 //app.use(authJWT()); // protects all the routes
+
+// make static images available in the frontend
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 
 // routes
 app.use('/api/v1/products', productRouter);
