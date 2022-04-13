@@ -10,9 +10,13 @@ import {
   updateProduct,
   deleteProduct,
   getFeaturedProducts,
+  uploadProductGallery,
 } from '../controllers/productsController.js';
 
 router.route('/featured/:count').get(getFeaturedProducts);
+router
+  .route('/gallery-images/:id')
+  .patch(uploadOptions.array('images', 10), uploadProductGallery);
 router
   .route('/')
   .post(uploadOptions.single('image'), createProduct)

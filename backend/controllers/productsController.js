@@ -59,7 +59,7 @@ const updateProduct = async (req, res) => {
   let imagePath;
   if (req.file) {
     const fileName = req.file.filename;
-    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
     imagePath = `${basePath}${fileName}`;
   } else {
     imagePath = product.image;
@@ -98,6 +98,36 @@ const getFeaturedProducts = async (req, res) => {
   res.status(StatusCodes.OK).json({ products });
 };
 
+const uploadProductGallery = async (req, res) => {
+  const { id: productId } = req.params;
+  const isProductIdValid = mongoose.isValidObjectId(productId);
+  if (!isProductIdValid) {
+    throw new BadRequestError(`product Id is invalid`);
+  }
+  let product = await Product.findOne({ _id: productId });
+  if (!product) {
+    throw new NotFoundError(`No product with id ${productId}`);
+  }
+
+  let imagesPaths = [];
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+  if (req.files) {
+    req.files.map((file) => {
+      imagesPaths.push(`${basePath}${file.filename}`);
+    });
+  }
+
+  product = await Product.findByIdAndUpdate(
+    productId,
+    { images: imagesPaths },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(StatusCodes.OK).json({ product });
+};
+
 export {
   createProduct,
   getProducts,
@@ -105,4 +135,5 @@ export {
   updateProduct,
   deleteProduct,
   getFeaturedProducts,
+  uploadProductGallery,
 };
